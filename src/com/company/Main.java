@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.concurrent.TimeUnit;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -10,14 +12,21 @@ public class Main {
          * 后面调用方法，结束掉executeThread,让runner守护线程随着执行线程结束。
          */
         service.execute(()->{
-            while(true){
-
+            int i=0;
+            while (i<10){
+                System.out.println("守护线程还活着");
+                try {
+                    TimeUnit.SECONDS.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                i++;
             }
         });
 
         service.shutdown(5000);
 
         long end = System.currentTimeMillis();
-        System.out.println("执行了"+(end-begin)+"ms");
+        System.out.println("main执行了"+(end-begin)+"ms");
     }
 }
